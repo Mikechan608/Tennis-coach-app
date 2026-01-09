@@ -1,4 +1,5 @@
 //My first AI-Powered tennis app
+// updated for better AI analysis-Jan 2026
 import React, { useState, useRef, useEffect } from 'react';
 
 const styles = {
@@ -228,7 +229,7 @@ const App = () => {
       <main style={styles.main}>
         <header style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: '40px' }}>
           <div>
-            <h1 style={{ fontSize: '32px', fontWeight: '800', margin: 0 }}>Performance Lab</h1>
+            <h1 style={{ fontSize: '32px', fontWeight: '800', margin: 0 }}>AI Tennis Coach Lab</h1>
             <input 
               placeholder="Paste Gemini API Key here..." 
               value={apiKey} 
