@@ -8,7 +8,7 @@ Setup InstructionsClone the repo: git clone https://github.com/Mikechan608/Tenni
 Navigate to the folder: cd tennis-ai-coach
 Install dependencies: npm install
 Get a Gemini API key from aistudio.google.com/app/apikey.
-Run locally: npm run dev (opens at http://localhost:5173).
+Run locally: npm run dev (opens at http://localhost:5173).on Vercel platform: https://tennis-coach-app.vercel.app/
 Paste your API key in the app's input field.
 
 UsageEnter your Gemini API key.
