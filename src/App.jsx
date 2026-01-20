@@ -112,7 +112,8 @@ const App = () => {
   });
   const [activeSession, setActiveSession] = useState(null);
   const [isAnalyzing, setIsAnalyzing] = useState(false);
-  const [videoPlaybackSpeed, setVideoPlaybackSpeed] = useState(1);
+  const [videoPlaybackSpeed, setVideoPlaybackSpeed] = useState(1
+  );
   const [activeTab, setActiveTab] = useState('forehand'); // New: Track which stroke tab is active
   
   const videoRef = useRef(null);
