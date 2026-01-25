@@ -1,5 +1,5 @@
 // Testing branching - Day 5
-//My first AI-Powered tennis app
+// My first AI-Powered tennis app
 // updated for better AI analysis-Jan 2026
 import React, { useState, useRef, useEffect } from 'react';
 
@@ -112,8 +112,7 @@ const App = () => {
   });
   const [activeSession, setActiveSession] = useState(null);
   const [isAnalyzing, setIsAnalyzing] = useState(false);
-  const [videoPlaybackSpeed, setVideoPlaybackSpeed] = useState(1
-  );
+  const [videoPlaybackSpeed, setVideoPlaybackSpeed] = useState(1);
   const [activeTab, setActiveTab] = useState('forehand'); // New: Track which stroke tab is active
   
   const videoRef = useRef(null);
@@ -217,6 +216,19 @@ const App = () => {
   };
 
   const currentStroke = activeSession?.[activeTab] || null;
+
+  const exportToCSV = () => {
+    const csvContent = "data:text/csv;charset=utf-8," 
+      + "Date,Stroke Type,Power,Consistency,Technique\n"
+      + sessions.map(s => `${s.date},${s.strokeType},${s.powerScore},${s.consistencyScore},${s.techniqueScore}`).join("\n");
+    const encodedUri = encodeURI(csvContent);
+    const link = document.createElement("a");
+    link.setAttribute("href", encodedUri);
+    link.setAttribute("download", "tennis_sessions.csv");
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+  };
 
   return (
     <div style={styles.container}>
@@ -353,6 +365,9 @@ const App = () => {
                   </div>
                 </div>
               ))}
+              <button onClick={exportToCSV} style={{ ...styles.buttonPrimary, marginTop: '10px' }}>
+                Export Sessions to CSV
+              </button>
             </div>
           </aside>
         </div>
