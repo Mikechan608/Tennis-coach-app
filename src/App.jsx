@@ -335,6 +335,13 @@ const App = () => {
             <div style={{ ...styles.card, marginTop: '30px', backgroundColor: '#1e1b4b', color: 'white' }}>
               <h3 style={{ margin: '0 0 15px 0' }}>Coach's Verdict</h3>
               <p style={{ lineHeight: '1.6', opacity: 0.9 }}>{activeSession?.analysis || "Awaiting your next session analysis..."}</p>
+              {activeSession?.tips?.length > 0 && (
+                <ul style={{ marginTop: '12px', paddingLeft: '20px' }}>
+                  {activeSession.tips.map((tip, idx) => (
+                    <li key={idx} style={{ marginBottom: '6px', opacity: 0.95 }}>{tip}</li>
+                  ))}
+                </ul>
+              )}
             </div>
           </section>
 
