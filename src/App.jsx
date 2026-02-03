@@ -1,7 +1,9 @@
 // Testing branching - Day 5
 // My first AI-Powered tennis app
 // updated for better AI analysis-Jan 2026
+// Future: Integrate Teachable Machine for local ML detection
 import React, { useState, useRef, useEffect } from 'react';
+import History from './History';
 
 const styles = {
   container: {
@@ -286,14 +288,14 @@ const App = () => {
                 </div>
               )}
               {activeSession && (
-                <button 
-                  onClick={togglePlaybackSpeed}
-                  style={{ position: 'absolute', top: '20px', right: '20px', backgroundColor: 'rgba(0,0,0,0.6)', color: 'white', border: 'none', padding: '8px 12px', borderRadius: '8px', cursor: 'pointer', fontWeight: 'bold' }}
-                >
-                  {videoPlaybackSpeed}x Speed
-                </button>
-              )}
-            </div>
+                  <button 
+                    onClick={togglePlaybackSpeed}
+                    style={{ position: 'absolute', top: '20px', right: '20px', backgroundColor: 'rgba(0,0,0,0.6)', color: 'white', border: 'none', padding: '8px 12px', borderRadius: '8px', cursor: 'pointer', fontWeight: 'bold' }}
+                  >
+                    {videoPlaybackSpeed}x Speed
+                  </button>
+                )}
+              </div>
 
             {/* Stroke Tabs */}
             {activeSession && (
@@ -335,48 +337,11 @@ const App = () => {
             <div style={{ ...styles.card, marginTop: '30px', backgroundColor: '#1e1b4b', color: 'white' }}>
               <h3 style={{ margin: '0 0 15px 0' }}>Coach's Verdict</h3>
               <p style={{ lineHeight: '1.6', opacity: 0.9 }}>{activeSession?.analysis || "Awaiting your next session analysis..."}</p>
-              {activeSession?.tips?.length > 0 && (
-                <ul style={{ marginTop: '12px', paddingLeft: '20px' }}>
-                  {activeSession.tips.map((tip, idx) => (
-                    <li key={idx} style={{ marginBottom: '6px', opacity: 0.95 }}>{tip}</li>
-                  ))}
-                </ul>
-              )}
             </div>
           </section>
 
-          {/* History Sidebar */}
-          <aside>
-            <div style={styles.card}>
-              <h3 style={{ margin: '0 0 20px 0', fontSize: '18px' }}>Session History</h3>
-              {sessions.length === 0 && <p style={{ color: '#94a3b8', fontSize: '14px' }}>No sessions recorded yet.</p>}
-              {sessions.map(s => (
-                <div 
-                  key={s.id} 
-                  onClick={() => setActiveSession(s)}
-                  style={{ 
-                    padding: '15px', 
-                    borderRadius: '16px', 
-                    backgroundColor: activeSession?.id === s.id ? '#f1f5f9' : 'transparent',
-                    cursor: 'pointer',
-                    marginBottom: '10px',
-                    border: '1px solid #f1f5f9'
-                  }}
-                >
-                  <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '5px' }}>
-                    <span style={{ fontWeight: 'bold' }}>Multi-Stroke Session</span>
-                    <span style={{ fontSize: '12px', color: '#64748b' }}>{s.date}</span>
-                  </div>
-                  <div style={{ fontSize: '12px', color: '#4f46e5', fontWeight: 'bold' }}>
-                    Avg Score: {Math.round(((s.forehand?.powerScore || 0) + (s.forehand?.consistencyScore || 0) + (s.forehand?.techniqueScore || 0) + (s.backhand?.powerScore || 0) + (s.backhand?.consistencyScore || 0) + (s.backhand?.techniqueScore || 0)) / 6)}%
-                  </div>
-                </div>
-              ))}
-              <button onClick={exportToCSV} style={{ ...styles.buttonPrimary, marginTop: '10px' }}>
-                Export Sessions to CSV
-              </button>
-            </div>
-          </aside>
+          {/* History Sidebar (now a component) */}
+          <History sessions={sessions} setActiveSession={setActiveSession} styles={styles} />
         </div>
       </main>
     </div>
