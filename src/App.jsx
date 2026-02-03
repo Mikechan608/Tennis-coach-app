@@ -339,6 +339,7 @@ const App = () => {
           </section>
 
           {/* History Sidebar */}
+          // Git History Note: Refactored sidebar here on [date from log] - improves maintainability
           <aside>
             <div style={styles.card}>
               <h3 style={{ margin: '0 0 20px 0', fontSize: '18px' }}>Session History</h3>
