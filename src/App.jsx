@@ -1,6 +1,7 @@
 // Testing branching - Day 5
 // My first AI-Powered tennis app
 // updated for better AI analysis-Jan 2026
+// CI/CD: GitHub Actions now auto-builds on push - ensures reliable AI app deploys
 import React, { useState, useRef, useEffect } from 'react';
 
 const styles = {
@@ -339,7 +340,6 @@ const App = () => {
           </section>
 
           {/* History Sidebar */}
-          // Git History Note: Refactored sidebar here on [date from log] - improves maintainability
           <aside>
             <div style={styles.card}>
               <h3 style={{ margin: '0 0 20px 0', fontSize: '18px' }}>Session History</h3>
