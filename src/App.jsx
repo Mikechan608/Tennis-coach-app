@@ -120,6 +120,7 @@ const App = () => {
   const fileInputRef = useRef(null);
 
   // Auto-save to local storage
+  // Scaling Note: LocalStorage is fine for personal use, but for multi-user/team scaling, switch to cloud database (e.g., Firebase, Supabase) to persist sessions securely and share across devices.
   useEffect(() => {
     localStorage.setItem('tennis_sessions', JSON.stringify(sessions));
     localStorage.setItem('tennis_api_key', apiKey);
@@ -164,6 +165,7 @@ const App = () => {
         - tips: (3 short bullet points for improvement)
       `;
 
+      // Scaling Note: Gemini API call is synchronous — for production/high traffic, add rate limiting, caching (e.g., memoization), or queueing to avoid API overload/costs.
       const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${apiKey}`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -201,6 +203,7 @@ const App = () => {
         videoBase64: `data:${file.type};base64,${base64Data}`,
         ...result
       };
+      // Scaling Note: Video stored as base64 in state/localStorage — limits size/performance. For larger videos or many users, upload to cloud storage (e.g., Cloudinary, Firebase Storage) and store only URLs.
 
       setSessions([newSession, ...sessions]);
       setActiveSession(newSession);
