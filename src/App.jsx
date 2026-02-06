@@ -219,17 +219,25 @@ const App = () => {
   const currentStroke = activeSession?.[activeTab] || null;
 
   const exportToCSV = () => {
-    const csvContent = "data:text/csv;charset=utf-8," 
-      + "Date,Stroke Type,Power,Consistency,Technique\n"
-      + sessions.map(s => `${s.date},${s.strokeType},${s.powerScore},${s.consistencyScore},${s.techniqueScore}`).join("\n");
-    const encodedUri = encodeURI(csvContent);
-    const link = document.createElement("a");
-    link.setAttribute("href", encodedUri);
-    link.setAttribute("download", "tennis_sessions.csv");
-    document.body.appendChild(link);
-    link.click();
-    document.body.removeChild(link);
-  };
+  const csvContent = "data:text/csv;charset=utf-8,"
+    + "Date,Forehand Power,Forehand Consistency,Forehand Technique,"
+    + "Backhand Power,Backhand Consistency,Backhand Technique\n"
+    + sessions.map(s => {
+      const fh = s.forehand || {};
+      const bh = s.backhand || {};
+      return `${s.date},`
+        + `${fh.powerScore ?? ''},${fh.consistencyScore ?? ''},${fh.techniqueScore ?? ''},`
+        + `${bh.powerScore ?? ''},${bh.consistencyScore ?? ''},${bh.techniqueScore ?? ''}`;
+    }).join("\n");
+
+  const encodedUri = encodeURI(csvContent);
+  const link = document.createElement("a");
+  link.setAttribute("href", encodedUri);
+  link.setAttribute("download", "tennis_sessions.csv");
+  document.body.appendChild(link);
+  link.click();
+  document.body.removeChild(link);
+};
 
   return (
     <div style={styles.container}>
