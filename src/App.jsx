@@ -220,14 +220,21 @@ const App = () => {
 
   const exportToCSV = () => {
   const csvContent = "data:text/csv;charset=utf-8,"
-    + "Date,Forehand Power,Forehand Consistency,Forehand Technique,"
-    + "Backhand Power,Backhand Consistency,Backhand Technique\n"
+    + "Date,Stroke Type,Power,Consistency,Technique\n"
     + sessions.map(s => {
-      const fh = s.forehand || {};
-      const bh = s.backhand || {};
-      return `${s.date},`
-        + `${fh.powerScore ?? ''},${fh.consistencyScore ?? ''},${fh.techniqueScore ?? ''},`
-        + `${bh.powerScore ?? ''},${bh.consistencyScore ?? ''},${bh.techniqueScore ?? ''}`;
+      // New structure: create separate rows for forehand and backhand if present
+      if (s.forehand || s.backhand) {
+        const rows = [];
+        if (s.forehand) {
+          rows.push(`${s.date},Forehand,${s.forehand.powerScore ?? ''},${s.forehand.consistencyScore ?? ''},${s.forehand.techniqueScore ?? ''}`);
+        }
+        if (s.backhand) {
+          rows.push(`${s.date},Backhand,${s.backhand.powerScore ?? ''},${s.backhand.consistencyScore ?? ''},${s.backhand.techniqueScore ?? ''}`);
+        }
+        return rows.join("\n");
+      }
+      // Old structure: one row per session with strokeType
+      return `${s.date},${s.strokeType || 'Unknown'},${s.powerScore || ''},${s.consistencyScore || ''},${s.techniqueScore || ''}`;
     }).join("\n");
 
   const encodedUri = encodeURI(csvContent);
@@ -370,7 +377,25 @@ const App = () => {
                     <span style={{ fontSize: '12px', color: '#64748b' }}>{s.date}</span>
                   </div>
                   <div style={{ fontSize: '12px', color: '#4f46e5', fontWeight: 'bold' }}>
-                    Avg Score: {Math.round(((s.forehand?.powerScore || 0) + (s.forehand?.consistencyScore || 0) + (s.forehand?.techniqueScore || 0) + (s.backhand?.powerScore || 0) + (s.backhand?.consistencyScore || 0) + (s.backhand?.techniqueScore || 0)) / 6)}%
+                    {(() => {
+                      // Handle new structure with both forehand and backhand
+                      if (s.forehand || s.backhand) {
+                        const scores = [];
+                        if (s.forehand) {
+                          scores.push(s.forehand.powerScore, s.forehand.consistencyScore, s.forehand.techniqueScore);
+                        }
+                        if (s.backhand) {
+                          scores.push(s.backhand.powerScore, s.backhand.consistencyScore, s.backhand.techniqueScore);
+                        }
+                        const avg = scores.length > 0 ? scores.filter(s => s !== null && s !== undefined).reduce((a, b) => a + b, 0) / scores.length : 0;
+                        return `Avg Score: ${Math.round(avg)}%`;
+                      }
+                      // Handle old structure with single stroke type
+                      const avg = s.powerScore && s.consistencyScore && s.techniqueScore
+                        ? (s.powerScore + s.consistencyScore + s.techniqueScore) / 3
+                        : 0;
+                      return `Avg Score: ${Math.round(avg)}%`;
+                    })()}
                   </div>
                 </div>
               ))}
